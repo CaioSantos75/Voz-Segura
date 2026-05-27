@@ -2,7 +2,6 @@
 // VOZ ATIVA - JAVASCRIPT PRINCIPAL
 // ===================================
 
-// Toggle Mobile Menu
 function toggleMobileMenu() {
     const menu = document.getElementById('mobileMenu');
     if (menu) {
@@ -10,7 +9,6 @@ function toggleMobileMenu() {
     }
 }
 
-// Fechar menu mobile ao clicar fora
 document.addEventListener('click', function(event) {
     const menu = document.getElementById('mobileMenu');
     const menuBtn = document.querySelector('.mobile-menu-btn');
@@ -22,7 +20,7 @@ document.addEventListener('click', function(event) {
     }
 });
 
-// Smooth Scroll para âncoras
+
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function (e) {
         e.preventDefault();
@@ -36,7 +34,6 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     });
 });
 
-// Animação ao scroll (fade in)
 function fadeInOnScroll() {
     const elements = document.querySelectorAll('.card, .grid > div');
 
@@ -58,8 +55,7 @@ function fadeInOnScroll() {
         observer.observe(element);
     });
 }
-
-// Inicializar animações quando a página carregar
+r
 if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', fadeInOnScroll);
 } else {
@@ -77,7 +73,6 @@ function validatePhone(phone) {
     return re.test(phone);
 }
 
-// Máscara para telefone
 function maskPhone(input) {
     let value = input.value.replace(/\D/g, '');
     if (value.length <= 11) {

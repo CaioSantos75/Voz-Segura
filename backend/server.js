@@ -6,11 +6,12 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// Configuração do seu MySQL (ajuste com sua senha local)
+
+
 const db = mysql.createConnection({
     host: 'localhost',
     user: 'root',
-    password: '@Nathy0212',
+    password: '12345678',
     database: 'voz_segura'
 });
 
@@ -27,14 +28,11 @@ db.connect((err) => {
 // =====================================================
 app.post('/api/usuarios', (req, res) => {
     const { nome, email, telefone, senha } = req.body;
-
-    // Query para inserir na tabela conforme a estrutura do seu banco
     const query = `INSERT INTO usuarios (nome, email, telefone, senha) VALUES (?, ?, ?, ?)`;
 
     db.query(query, [nome, email, telefone, senha], (err, result) => {
         if (err) {
             console.error('Erro no MySQL:', err);
-            // Tratamento caso o e-mail já esteja cadastrado (campo UNIQUE)
             if (err.code === 'ER_DUP_ENTRY') {
                 return res.status(400).json({ error: 'Este e-mail já está cadastrado.' });
             }
@@ -58,20 +56,17 @@ app.post('/api/login', (req, res) => {
             return res.status(500).json({ error: 'Erro interno no servidor.' });
         }
 
-        // Se não encontrar nenhuma linha, significa que o e-mail não existe
         if (results.length === 0) {
             return res.status(401).json({ error: 'E-mail ou senha incorretos.' });
         }
 
         const usuario = results[0];
 
-        // Verifica se a senha informada bate com a senha do banco
-        // (Nota: Em produção, lembre-se de usar criptografia como bcrypt)
+    
         if (senha !== usuario.senha) {
             return res.status(401).json({ error: 'E-mail ou senha incorretos.' });
         }
 
-        // Se deu tudo certo, responde com sucesso
         res.status(200).json({
             message: 'Login validado!',
             id_usuario: usuario.id_usuario,
@@ -88,23 +83,20 @@ app.listen(3000, () => {
 // ROTA PARA REGISTRAR DENÚNCIA (ATUALIZADA)
 // =====================================================
 app.post('/api/denuncias', (req, res) => {
-    // 1. ADICIONADO O id_usuario AQUI NO REQ.BODY
     const {
-        id_usuario, // <-- Captura o ID vindo do localStorage do front-end
+        id_usuario,
         nome, cpf, email, telefone, endereco,
         tipo_violencia, data_ocorrido, local_ocorrido,
         descricao, agressor
     } = req.body;
 
-    // Gerar um número de protocolo amigável (Ex: VA-2026-123456)
+
     const numeroAleatorio = Math.floor(Math.random() * 900000 + 100000);
     const protocoloGerado = `VA-2026-${numeroAleatorio}`;
-
-    // Mapeamento simples do texto do select para o ID correspondente da tabela 'tipos_violencia'
+ 
     const mapaTipos = { fisica: 1, psicologica: 2, sexual: 3, patrimonial: 4, moral: 5, multiplas: 6 };
     const id_tipo = mapaTipos[tipo_violencia] || null;
 
-    // 2. ADICIONADO id_usuario NAS COLUNAS E MAIS UMA INTERROGAÇÃO (?) NO VALUESS
     const queryDenuncia = `
         INSERT INTO denuncias 
         (id_usuario, titulo, descricao, local_ocorrido, data_ocorrido, status_denuncia, prioridade, anonimato, id_tipo) 
@@ -134,7 +126,6 @@ app.post('/api/denuncias', (req, res) => {
 app.get('/api/denuncias/:id_usuario', (req, res) => {
     const { id_usuario } = req.params;
 
-    // Faz uma junção (JOIN) para trazer o nome legível do tipo de violência
     const query = `
         SELECT d.*, tv.nome_tipo 
         FROM denuncias d
@@ -149,7 +140,6 @@ app.get('/api/denuncias/:id_usuario', (req, res) => {
             return res.status(500).json({ error: 'Erro ao carregar o histórico.' });
         }
 
-        // Devolve o array com todas as denúncias encontradas para o HTML
         res.status(200).json(results);
     });
 });
