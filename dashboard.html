@@ -232,7 +232,6 @@
                             </div>
                         </div>
 
-                        <!-- Denúncia 3 -->
                         <div class="denuncia-card concluida"
                             style="border: 1px solid var(--gray-200); border-radius: 0.5rem; padding: 1.5rem; background: var(--white);">
                             <div
@@ -291,7 +290,6 @@
                 return;
             }
 
-            // Carrega as denúncias reais vindas do banco de dados
             carregarDenunciasDoBanco(idUsuario);
         });
 
@@ -305,7 +303,6 @@
                     return;
                 }
 
-                // 1. Atualizar os Painéis de Estatísticas
                 const total = denuncias.length;
                 const pendentes = denuncias.filter(d => d.status_denuncia === 'pendente').length;
                 const emAnalise = denuncias.filter(d => d.status_denuncia === 'em_analise' || d.status_denuncia === 'em_atendimento').length;
