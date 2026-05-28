@@ -9,7 +9,7 @@ function toggleMobileMenu() {
     }
 }
 
-document.addEventListener('click', function(event) {
+document.addEventListener('click', function (event) {
     const menu = document.getElementById('mobileMenu');
     const menuBtn = document.querySelector('.mobile-menu-btn');
 
@@ -84,7 +84,7 @@ function maskPhone(input) {
 
 // Aplicar máscara de telefone em inputs
 document.querySelectorAll('input[type="tel"]').forEach(input => {
-    input.addEventListener('input', function() {
+    input.addEventListener('input', function () {
         maskPhone(this);
     });
 });
@@ -93,12 +93,12 @@ document.querySelectorAll('input[type="tel"]').forEach(input => {
 let formChanged = false;
 
 document.querySelectorAll('form input, form textarea, form select').forEach(element => {
-    element.addEventListener('change', function() {
+    element.addEventListener('change', function () {
         formChanged = true;
     });
 });
 
-window.addEventListener('beforeunload', function(e) {
+window.addEventListener('beforeunload', function (e) {
     if (formChanged) {
         e.preventDefault();
         e.returnValue = 'Você tem alterações não salvas. Deseja sair mesmo assim?';
@@ -108,16 +108,16 @@ window.addEventListener('beforeunload', function(e) {
 
 // Resetar flag quando formulário é enviado
 document.querySelectorAll('form').forEach(form => {
-    form.addEventListener('submit', function() {
+    form.addEventListener('submit', function () {
         formChanged = false;
     });
 });
 
 // Copiar texto (para protocolos de denúncia)
 function copyToClipboard(text) {
-    navigator.clipboard.writeText(text).then(function() {
+    navigator.clipboard.writeText(text).then(function () {
         alert('Copiado para a área de transferência!');
-    }, function(err) {
+    }, function (err) {
         console.error('Erro ao copiar:', err);
     });
 }
@@ -133,7 +133,7 @@ document.querySelectorAll('textarea[maxlength]').forEach(textarea => {
         textarea.parentNode.insertBefore(counter, textarea.nextSibling);
     }
 
-    textarea.addEventListener('input', function() {
+    textarea.addEventListener('input', function () {
         counter.textContent = `${this.value.length}/${maxLength}`;
 
         if (this.value.length >= maxLength * 0.9) {
@@ -146,7 +146,7 @@ document.querySelectorAll('textarea[maxlength]').forEach(textarea => {
 
 // Confirmar ações destrutivas
 document.querySelectorAll('[data-confirm]').forEach(element => {
-    element.addEventListener('click', function(e) {
+    element.addEventListener('click', function (e) {
         const message = this.getAttribute('data-confirm');
         if (!confirm(message)) {
             e.preventDefault();
@@ -183,12 +183,12 @@ function showTooltip(element, text) {
 document.querySelectorAll('[data-tooltip]').forEach(element => {
     let tooltip = null;
 
-    element.addEventListener('mouseenter', function() {
+    element.addEventListener('mouseenter', function () {
         const text = this.getAttribute('data-tooltip');
         tooltip = showTooltip(this, text);
     });
 
-    element.addEventListener('mouseleave', function() {
+    element.addEventListener('mouseleave', function () {
         if (tooltip) {
             tooltip.remove();
             tooltip = null;
