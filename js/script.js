@@ -55,7 +55,7 @@ function fadeInOnScroll() {
         observer.observe(element);
     });
 }
-r
+
 if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', fadeInOnScroll);
 } else {
