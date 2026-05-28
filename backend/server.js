@@ -98,7 +98,6 @@ app.post('/api/login', (req, res) => {
                         'E-mail ou senha incorretos.'
                 });
             }
-
             // sucesso login
             return res.status(200).json({
                 message: 'Login validado!',
