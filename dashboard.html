@@ -11,31 +11,42 @@
 </head>
 
 <body>
-    <!-- Header -->
     <header>
-        <div class="container header-content">
-            <a href="index.html" class="logo">
-                <div class="logo-circle">V</div>
-                <span class="logo-text">Voz Ativa</span>
+    <div class="container header-content">
+        <a href="index.html" class="logo">
+            <div class="logo-circle">V</div>
+            <span class="logo-text">Voz Ativa</span>
+        </a>
+
+        <nav class="nav-desktop"></nav>
+
+        <div class="user-nav">
+            <a href="dashboard.html" class="user-nav-link active">
+                Minhas Denúncias
             </a>
 
-            <nav class="nav-desktop">
-            </nav>
+            <!-- LINK DO ADMIN (começa escondido) -->
+            <a href="denunciasADM.html"
+               id="adminLink"
+               class="user-nav-link"
+               style="display: none;">
+                Painel Admin
+            </a>
 
-            <div class="user-nav">
-                <a href="dashboard.html" class="user-nav-link active">Minhas Denúncias</a>
-                <a href="tel:180" class="btn-emergency">180</a>
-            </div>
-
-            <button class="mobile-menu-btn" onclick="toggleMobileMenu()">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <line x1="3" y1="12" x2="21" y2="12"></line>
-                    <line x1="3" y1="6" x2="21" y2="6"></line>
-                    <line x1="3" y1="18" x2="21" y2="18"></line>
-                </svg>
-            </button>
+            <a href="tel:180" class="btn-emergency">
+                180
+            </a>
         </div>
-    </header>
+
+        <button class="mobile-menu-btn" onclick="toggleMobileMenu()">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2">
+                <line x1="3" y1="12" x2="21" y2="12"></line>
+                <line x1="3" y1="6" x2="21" y2="6"></line>
+                <line x1="3" y1="18" x2="21" y2="18"></line>
+            </svg>
+        </button>
+    </div>
 
     <!-- Main Content -->
     <section
@@ -276,11 +287,7 @@
             const idUsuario = localStorage.getItem('id_usuario');
 
             // Se não houver um ID salvo, significa que não fez login. Redireciona para segurança.
-            if (!idUsuario) {
-                alert('Acesso negado. Por favor, faça login primeiro.');
-                window.location.href = 'login.html';
-                return;
-            }
+        
 
             carregarDenunciasDoBanco(idUsuario);
         });

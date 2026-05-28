@@ -155,145 +155,277 @@
         </div>
     </section>
 
-    <script>
+ <script>
+    // ===================================
+    // TROCAR ABAS LOGIN/CADASTRO
+    // ===================================
     function showTab(tabName) {
+
         // esconder conteúdos
-        document.querySelectorAll('.tab-content').forEach(content => {
-            content.classList.remove('active');
-        });
+        document.querySelectorAll('.tab-content')
+            .forEach(content => {
+                content.classList.remove('active');
+            });
 
-        document.querySelectorAll('.tab-trigger').forEach(trigger => {
-            trigger.classList.remove('active');
-            trigger.style.background = 'transparent';
-            trigger.style.color = 'var(--gray-600)';
-        });
+        // reset visual tabs
+        document.querySelectorAll('.tab-trigger')
+            .forEach(trigger => {
+                trigger.classList.remove('active');
+                trigger.style.background = 'transparent';
+                trigger.style.color = 'var(--gray-600)';
+            });
 
-        // mostrar aba selecionada
+        // ativar aba
         if (tabName === 'login') {
-            document.getElementById('loginContent').classList.add('active');
-            document.getElementById('loginTab').classList.add('active');
 
-            document.getElementById('loginTab').style.background = 'var(--white)';
-            document.getElementById('loginTab').style.color = 'var(--purple-600)';
+            document.getElementById('loginContent')
+                .classList.add('active');
+
+            document.getElementById('loginTab')
+                .classList.add('active');
+
+            document.getElementById('loginTab')
+                .style.background = 'var(--white)';
+
+            document.getElementById('loginTab')
+                .style.color = 'var(--purple-600)';
+
         } else {
-            document.getElementById('cadastroContent').classList.add('active');
-            document.getElementById('cadastroTab').classList.add('active');
 
-            document.getElementById('cadastroTab').style.background = 'var(--white)';
-            document.getElementById('cadastroTab').style.color = 'var(--purple-600)';
+            document.getElementById('cadastroContent')
+                .classList.add('active');
+
+            document.getElementById('cadastroTab')
+                .classList.add('active');
+
+            document.getElementById('cadastroTab')
+                .style.background = 'var(--white)';
+
+            document.getElementById('cadastroTab')
+                .style.color = 'var(--purple-600)';
         }
     }
 
+
+    // ===================================
+    // LOGIN
+    // ===================================
     async function handleLogin(event) {
+
         event.preventDefault();
 
-        const email = document.getElementById('login-email').value;
-        const senha = document.getElementById('login-senha').value;
+        const email =
+            document.getElementById(
+                'login-email'
+            ).value;
+
+        const senha =
+            document.getElementById(
+                'login-senha'
+            ).value;
 
         try {
-            const resposta = await fetch('http://localhost:3000/api/login', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    email,
-                    senha
-                })
-            });
 
-            const resultado = await resposta.json();
+            const resposta = await fetch(
+                'http://localhost:3000/api/login',
+                {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type':
+                            'application/json'
+                    },
+                    body: JSON.stringify({
+                        email,
+                        senha
+                    })
+                }
+            );
+
+            const resultado =
+                await resposta.json();
+                
+            console.log(
+                'Resposta do login:',
+                resultado
+            );
 
             if (resposta.ok) {
 
-                // salva usuário no navegador
+                const usuarioLogado = {
+                    id_usuario:
+                        resultado.id_usuario,
+
+                    nome:
+                        resultado.nome,
+
+                    email:
+                        resultado.email,
+
+                    nivel_acesso:
+                        resultado.nivel_acesso
+                };
+
+                // salvar no localStorage
                 localStorage.setItem(
                     'usuarioLogado',
-                    JSON.stringify({
-                        id_usuario: resultado.id_usuario,
-                        nome: resultado.nome,
-                        email: resultado.email,
-                        nivel_acesso: resultado.nivel_acesso
-                    })
+                    JSON.stringify(
+                        usuarioLogado
+                    )
                 );
 
-                alert('Login realizado com sucesso!');
+                console.log(
+                    'Usuário salvo:',
+                    JSON.parse(
+                        localStorage.getItem(
+                            'usuarioLogado'
+                        )
+                    )
+                );
 
-                // redireciona
-                window.location.href = 'dashboard.html';
+                alert(
+                    'Login realizado com sucesso!'
+                );
+
+                window.location.href =
+                    'dashboard.html';
 
             } else {
-                alert('Erro ao entrar: ' + resultado.error);
+
+                alert(
+                    'Erro ao entrar: ' +
+                    resultado.error
+                );
             }
 
         } catch (erro) {
-            console.error('Erro na requisição:', erro);
-            alert('Não foi possível conectar ao servidor backend.');
+
+            console.error(
+                'Erro na requisição:',
+                erro
+            );
+
+            alert(
+                'Não foi possível conectar ao servidor backend.'
+            );
         }
     }
 
+
+    // ===================================
+    // CADASTRO
+    // ===================================
     async function handleCadastro(event) {
+
         event.preventDefault();
 
-        const nome = document.getElementById('cadastro-nome').value;
-        const email = document.getElementById('cadastro-email').value;
-        const telefone = document.getElementById('cadastro-telefone').value;
-        const senha = document.getElementById('cadastro-senha').value;
-        const confirmar = document.getElementById('cadastro-confirmar').value;
+        const nome =
+            document.getElementById(
+                'cadastro-nome'
+            ).value;
+
+        const email =
+            document.getElementById(
+                'cadastro-email'
+            ).value;
+
+        const telefone =
+            document.getElementById(
+                'cadastro-telefone'
+            ).value;
+
+        const senha =
+            document.getElementById(
+                'cadastro-senha'
+            ).value;
+
+        const confirmar =
+            document.getElementById(
+                'cadastro-confirmar'
+            ).value;
 
         if (senha !== confirmar) {
-            alert('As senhas não coincidem!');
+
+            alert(
+                'As senhas não coincidem!'
+            );
+
             return;
         }
 
         try {
-            const resposta = await fetch('http://localhost:3000/api/usuarios', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    nome,
-                    email,
-                    telefone,
-                    senha
-                })
-            });
 
-            const resultado = await resposta.json();
+            const resposta = await fetch(
+                'http://localhost:3000/api/usuarios',
+                {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type':
+                            'application/json'
+                    },
+                    body: JSON.stringify({
+                        nome,
+                        email,
+                        telefone,
+                        senha
+                    })
+                }
+            );
+
+            const resultado =
+                await resposta.json();
 
             if (resposta.ok) {
-                alert('Cadastro realizado com sucesso!');
+
+                alert(
+                    'Cadastro realizado com sucesso!'
+                );
+
                 showTab('login');
+
             } else {
-                alert('Erro ao cadastrar: ' + resultado.error);
+
+                alert(
+                    'Erro ao cadastrar: ' +
+                    resultado.error
+                );
             }
 
         } catch (erro) {
-            console.error('Erro na requisição:', erro);
-            alert('Não foi possível conectar ao servidor backend.');
+
+            console.error(
+                'Erro na requisição:',
+                erro
+            );
+
+            alert(
+                'Não foi possível conectar ao servidor backend.'
+            );
         }
     }
 
-    function verificarLogin() {
-        const usuario = JSON.parse(
-            localStorage.getItem('usuarioLogado')
-        );
+    
 
-        // se já estiver logado, manda pro dashboard
-        if (usuario) {
-            window.location.href = 'dashboard.html';
+    // ===================================
+    // INIT
+    // ===================================
+    document.addEventListener(
+        'DOMContentLoaded',
+        function () {
+
+            // estilo inicial
+            document.getElementById(
+                'loginTab'
+            ).style.background =
+                'var(--white)';
+
+            document.getElementById(
+                'loginTab'
+            ).style.color =
+                'var(--purple-600)';
+
+            verificarLogin();
         }
-    }
-
-    document.addEventListener('DOMContentLoaded', function () {
-
-        // estilo inicial da tab login
-        document.getElementById('loginTab').style.background = 'var(--white)';
-        document.getElementById('loginTab').style.color = 'var(--purple-600)';
-
-        verificarLogin();
-    });
+    );
 </script>
 </body>
 

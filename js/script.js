@@ -196,5 +196,122 @@ document.querySelectorAll('[data-tooltip]').forEach(element => {
     });
 });
 
+// ===================================
+// BUSCAR DENÚNCIAS (ADMIN)
+// ===================================
+
+async function buscarDenunciasAdmin() {
+
+    const tabela = document.getElementById('listaDenuncias');
+
+    // evita erro se não estiver na página admin
+    if (!tabela) return;
+
+    try {
+
+        const resposta = await fetch(
+            'http://localhost:3000/api/admin/denuncias'
+        );
+
+        const denuncias = await resposta.json();
+
+        tabela.innerHTML = '';
+
+        denuncias.forEach(denuncia => {
+
+            tabela.innerHTML += `
+                <tr>
+                    <td>${denuncia.id_denuncia}</td>
+
+                    <td>
+                        ${denuncia.usuario || 'Anônimo'}
+                    </td>
+
+                    <td>
+                        ${denuncia.nome_tipo || '-'}
+                    </td>
+
+                    <td>
+                        ${denuncia.titulo || '-'}
+                    </td>
+
+                    <td>
+                        <span class="badge ${denuncia.status_denuncia}">
+                            ${denuncia.status_denuncia}
+                        </span>
+                    </td>
+
+                    <td>
+                        ${denuncia.prioridade}
+                    </td>
+
+                    <td>
+                        <button
+                            onclick="verDenuncia(${denuncia.id_denuncia})"
+                            class="btn btn-purple"
+                        >
+                            Ver
+                        </button>
+                    </td>
+                </tr>
+            `;
+        });
+
+        console.log(
+            'Denúncias carregadas:',
+            denuncias
+        );
+
+    } catch (erro) {
+
+        console.error(
+            'Erro ao buscar denúncias:',
+            erro
+        );
+    }
+}
+
+
+// ===================================
+// VER DETALHES DA DENÚNCIA
+// ===================================
+
+async function verDenuncia(id) {
+
+    try {
+
+        const resposta = await fetch(
+            `http://localhost:3000/api/admin/denuncias/${id}`
+        );
+
+        const denuncia = await resposta.json();
+
+        alert(`
+Usuário: ${denuncia.usuario}
+Tipo: ${denuncia.nome_tipo}
+Descrição: ${denuncia.descricao}
+Status: ${denuncia.status_denuncia}
+Prioridade: ${denuncia.prioridade}
+Local: ${denuncia.local_ocorrido || '-'}
+        `);
+
+    } catch (erro) {
+
+        console.error(
+            'Erro ao carregar denúncia:',
+            erro
+        );
+    }
+}
+
+
+// ===================================
+// INICIAR
+// ===================================
+
+document.addEventListener('DOMContentLoaded', () => {
+    buscarDenunciasAdmin();
+});
+
 // Log para debug
 console.log('Voz Ativa - Sistema carregado com sucesso!');
