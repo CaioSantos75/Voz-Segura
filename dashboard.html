@@ -276,14 +276,7 @@
             const idUsuario = localStorage.getItem('id_usuario');
 
             // Se não houver um ID salvo, significa que não fez login. Redireciona para segurança.
-            if (!idUsuario) {
-                alert('Acesso negado. Por favor, faça login primeiro.');
-                window.location.href = 'login.html';
-                return;
-            }
-
-            carregarDenunciasDoBanco(idUsuario);
-        });
+            
 
         async function carregarDenunciasDoBanco(idUsuario) {
             try {
