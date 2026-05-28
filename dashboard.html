@@ -320,7 +320,7 @@ async function carregarDenunciasDoBanco(idUsuario) {
         );
 
         const denuncias = await resposta.json();
-
+        
         console.log(denuncias);
 
         if (!resposta.ok) {

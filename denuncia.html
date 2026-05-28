@@ -834,8 +834,13 @@
                 alert('A descrição deve ter pelo menos 50 caracteres.');
                 return;
             }
+            const usuarioLogado = JSON.parse(
+                localStorage.getItem('usuarioLogado')
+            );
+
             const dadosDenuncia = {
-                id_usuario: localStorage.getItem('id_usuario') || null,
+                id_usuario: usuarioLogado?.id_usuario,
+
                 nome: document.getElementById('nome').value,
                 cpf: document.getElementById('cpf').value,
                 email: document.getElementById('email').value,
