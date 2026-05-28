@@ -89,7 +89,7 @@ app.post('/api/login', (req, res) => {
             }
 
             const usuario = results[0];
-
+            console.log(usuario)
             // valida senha
             if (senha !== usuario.senha) {
 
