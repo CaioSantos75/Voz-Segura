@@ -12,408 +12,388 @@
 
 <body>
     <header>
-    <div class="container header-content">
-        <a href="index.html" class="logo">
-            <div class="logo-circle">V</div>
-            <span class="logo-text">Voz Ativa</span>
-        </a>
-
-        <nav class="nav-desktop"></nav>
-
-        <div class="user-nav">
-            <a href="dashboard.html" class="user-nav-link active">
-                Minhas Denúncias
+        <div class="container header-content">
+            <a href="index.html" class="logo">
+                <div class="logo-circle">V</div>
+                <span class="logo-text">Voz Ativa</span>
             </a>
 
-            <!-- LINK DO ADMIN (começa escondido) -->
-            <a href="denunciasADM.html"
-               id="adminLink"
-               class="user-nav-link"
-               style="display: none;">
-                Painel Admin
-            </a>
+            <nav class="nav-desktop"></nav>
 
-            <a href="tel:180" class="btn-emergency">
-                180
-            </a>
-        </div>
+            <div class="user-nav">
+                <a href="dashboard.html" class="user-nav-link active">
+                    Minhas Denúncias
+                </a>
 
-        <button class="mobile-menu-btn" onclick="toggleMobileMenu()">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
-                stroke="currentColor" stroke-width="2">
-                <line x1="3" y1="12" x2="21" y2="12"></line>
-                <line x1="3" y1="6" x2="21" y2="6"></line>
-                <line x1="3" y1="18" x2="21" y2="18"></line>
-            </svg>
-        </button>
-    </div>
+                <!-- LINK DO ADMIN (começa escondido) -->
+                <a href="denunciasADM.html" id="adminLink" class="user-nav-link" style="display: none;">
+                    Painel Admin
+                </a>
 
-    <!-- Main Content -->
-    <section
-        style="min-height: 100vh; background: linear-gradient(135deg, var(--purple-50), var(--pink-50)); padding: 3rem 1rem;">
-        <div class="container" style="max-width: 80rem;">
-            <!-- Header -->
-            <div
-                style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; margin-bottom: 2rem;">
-                <div>
-                    <h1 style="font-size: 2.25rem; margin-bottom: 0.5rem;">Minhas Denúncias</h1>
-                    <p style="font-size: 1.125rem; color: var(--gray-600);">Acompanhe o status de suas denúncias</p>
-                </div>
-                <a href="denuncia.html" class="btn btn-purple" style="display: flex; align-items: center; gap: 0.5rem;">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <line x1="12" y1="5" x2="12" y2="19"></line>
-                        <line x1="5" y1="12" x2="19" y2="12"></line>
-                    </svg>
-                    Nova Denúncia
+                <a href="tel:180" class="btn-emergency">
+                    180
                 </a>
             </div>
 
-            <!-- Estatísticas -->
-            <div class="grid grid-4 mb-4">
-                <div class="card">
-                    <p style="color: var(--gray-600); font-size: 0.875rem; margin-bottom: 0.5rem;">Total de Denúncias
-                    </p>
-                    <p style="font-size: 2.25rem; font-weight: bold; color: var(--purple-600); margin-bottom: 0.75rem;">
-                        3</p>
-                    <p
-                        style="font-size: 0.875rem; color: var(--gray-600); display: flex; align-items: center; gap: 0.5rem;">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="2">
-                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                            <polyline points="14 2 14 8 20 8"></polyline>
-                        </svg>
-                        Registradas no sistema
-                    </p>
-                </div>
-
-                <div class="card">
-                    <p style="color: var(--gray-600); font-size: 0.875rem; margin-bottom: 0.5rem;">Pendentes</p>
-                    <p style="font-size: 2.25rem; font-weight: bold; color: #EAB308; margin-bottom: 0.75rem;">1</p>
-                    <p
-                        style="font-size: 0.875rem; color: var(--gray-600); display: flex; align-items: center; gap: 0.5rem;">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="2">
-                            <circle cx="12" cy="12" r="10"></circle>
-                            <polyline points="12 6 12 12 16 14"></polyline>
-                        </svg>
-                        Aguardando análise
-                    </p>
-                </div>
-
-                <div class="card">
-                    <p style="color: var(--gray-600); font-size: 0.875rem; margin-bottom: 0.5rem;">Em Análise</p>
-                    <p style="font-size: 2.25rem; font-weight: bold; color: #2563EB; margin-bottom: 0.75rem;">1</p>
-                    <p
-                        style="font-size: 0.875rem; color: var(--gray-600); display: flex; align-items: center; gap: 0.5rem;">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="2">
-                            <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"></path>
-                            <line x1="12" y1="9" x2="12" y2="13"></line>
-                            <line x1="12" y1="17" x2="12.01" y2="17"></line>
-                        </svg>
-                        Sendo processadas
-                    </p>
-                </div>
-
-                <div class="card">
-                    <p style="color: var(--gray-600); font-size: 0.875rem; margin-bottom: 0.5rem;">Concluídas</p>
-                    <p style="font-size: 2.25rem; font-weight: bold; color: #16A34A; margin-bottom: 0.75rem;">1</p>
-                    <p
-                        style="font-size: 0.875rem; color: var(--gray-600); display: flex; align-items: center; gap: 0.5rem;">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="2">
-                            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
-                            <polyline points="22 4 12 14.01 9 11.01"></polyline>
-                        </svg>
-                        Finalizadas
-                    </p>
-                </div>
-            </div>
-
-            <!-- Lista de Denúncias -->
-            <div class="card">
-                <h2 style="font-size: 1.5rem; margin-bottom: 0.5rem;">Histórico de Denúncias</h2>
-                <p style="color: var(--gray-600); margin-bottom: 1.5rem;">Visualize e acompanhe todas as suas denúncias
-                    registradas</p>
-
-                <!-- Tabs -->
-                <div class="tabs">
-                    <div class="tabs-list"
-                        style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.5rem; border-bottom: 2px solid var(--gray-200); margin-bottom: 1.5rem;">
-                        <button class="tab-trigger active" onclick="filterDenuncias('todas')"
-                            id="tab-todas">Todas</button>
-                        <button class="tab-trigger" onclick="filterDenuncias('pendentes')"
-                            id="tab-pendentes">Pendentes</button>
-                        <button class="tab-trigger" onclick="filterDenuncias('em_analise')" id="tab-em_analise">Em
-                            Análise</button>
-                        <button class="tab-trigger" onclick="filterDenuncias('concluidas')"
-                            id="tab-concluidas">Concluídas</button>
-                    </div>
-
-                    <!-- Denúncias -->
-                    <div id="denuncias-container">
-                        <!-- Denúncia 1 -->
-                        <div class="denuncia-card pendente"
-                            style="border: 1px solid var(--gray-200); border-radius: 0.5rem; padding: 1.5rem; margin-bottom: 1rem; background: var(--white); transition: all 0.3s;">
-                            <div
-                                style="display: flex; justify-content: space-between; align-items-start; gap: 1rem; flex-wrap: wrap;">
-                                <div style="flex: 1;">
-                                    <div
-                                        style="display: flex; justify-content: space-between; align-items-start; margin-bottom: 0.75rem;">
-                                        <div>
-                                            <h3 style="font-weight: 600; font-size: 1.125rem; margin-bottom: 0.25rem;">
-                                                Violência Patrimonial</h3>
-                                            <p style="font-size: 0.875rem; color: var(--gray-600);">Protocolo:
-                                                VA-2026-001156</p>
-                                        </div>
-                                        <span class="badge badge-warning">
-                                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none"
-                                                stroke="currentColor" stroke-width="2">
-                                                <circle cx="12" cy="12" r="10"></circle>
-                                                <polyline points="12 6 12 12 16 14"></polyline>
-                                            </svg>
-                                            Pendente
-                                        </span>
-                                    </div>
-                                    <p style="color: var(--gray-700); margin-bottom: 0.75rem;">Denúncia de destruição de
-                                        bens pessoais</p>
-                                    <div
-                                        style="display: flex; gap: 1rem; font-size: 0.875rem; color: var(--gray-600); flex-wrap: wrap;">
-                                        <span>📅 05/04/2026</span>
-                                        <span>🕐 16:45</span>
-                                    </div>
-                                </div>
-                                <div style="display: flex; flex-direction: column; gap: 0.5rem;">
-                                    <button class="btn btn-outline"
-                                        style="font-size: 0.875rem; padding: 0.5rem 1rem;">👁️ Ver Detalhes</button>
-                                    <button class="btn btn-outline"
-                                        style="font-size: 0.875rem; padding: 0.5rem 1rem;">⬇️ Baixar</button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Denúncia 2 -->
-                        <div class="denuncia-card em_analise"
-                            style="border: 1px solid var(--gray-200); border-radius: 0.5rem; padding: 1.5rem; margin-bottom: 1rem; background: var(--white);">
-                            <div
-                                style="display: flex; justify-content: space-between; align-items-start; gap: 1rem; flex-wrap: wrap;">
-                                <div style="flex: 1;">
-                                    <div
-                                        style="display: flex; justify-content: space-between; align-items-start; margin-bottom: 0.75rem;">
-                                        <div>
-                                            <h3 style="font-weight: 600; font-size: 1.125rem; margin-bottom: 0.25rem;">
-                                                Violência Física</h3>
-                                            <p style="font-size: 0.875rem; color: var(--gray-600);">Protocolo:
-                                                VA-2026-001234</p>
-                                        </div>
-                                        <span class="badge badge-primary">
-                                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none"
-                                                stroke="currentColor" stroke-width="2">
-                                                <path
-                                                    d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z">
-                                                </path>
-                                                <line x1="12" y1="9" x2="12" y2="13"></line>
-                                                <line x1="12" y1="17" x2="12.01" y2="17"></line>
-                                            </svg>
-                                            Em Análise
-                                        </span>
-                                    </div>
-                                    <p style="color: var(--gray-700); margin-bottom: 0.75rem;">Denúncia de agressão
-                                        física ocorrida no ambiente doméstico</p>
-                                    <div
-                                        style="display: flex; gap: 1rem; font-size: 0.875rem; color: var(--gray-600); flex-wrap: wrap;">
-                                        <span>📅 15/04/2026</span>
-                                        <span>🕐 14:30</span>
-                                    </div>
-                                </div>
-                                <div style="display: flex; flex-direction: column; gap: 0.5rem;">
-                                    <button class="btn btn-outline"
-                                        style="font-size: 0.875rem; padding: 0.5rem 1rem;">👁️ Ver Detalhes</button>
-                                    <button class="btn btn-outline"
-                                        style="font-size: 0.875rem; padding: 0.5rem 1rem;">⬇️ Baixar</button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="denuncia-card concluida"
-                            style="border: 1px solid var(--gray-200); border-radius: 0.5rem; padding: 1.5rem; background: var(--white);">
-                            <div
-                                style="display: flex; justify-content: space-between; align-items-start; gap: 1rem; flex-wrap: wrap;">
-                                <div style="flex: 1;">
-                                    <div
-                                        style="display: flex; justify-content: space-between; align-items-start; margin-bottom: 0.75rem;">
-                                        <div>
-                                            <h3 style="font-weight: 600; font-size: 1.125rem; margin-bottom: 0.25rem;">
-                                                Violência Psicológica</h3>
-                                            <p style="font-size: 0.875rem; color: var(--gray-600);">Protocolo:
-                                                VA-2026-001198</p>
-                                        </div>
-                                        <span class="badge badge-success">
-                                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none"
-                                                stroke="currentColor" stroke-width="2">
-                                                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
-                                                <polyline points="22 4 12 14.01 9 11.01"></polyline>
-                                            </svg>
-                                            Concluída
-                                        </span>
-                                    </div>
-                                    <p style="color: var(--gray-700); margin-bottom: 0.75rem;">Relato de ameaças e
-                                        intimidação constante</p>
-                                    <div
-                                        style="display: flex; gap: 1rem; font-size: 0.875rem; color: var(--gray-600); flex-wrap: wrap;">
-                                        <span>📅 10/04/2026</span>
-                                        <span>🕐 09:15</span>
-                                    </div>
-                                </div>
-                                <div style="display: flex; flex-direction: column; gap: 0.5rem;">
-                                    <button class="btn btn-outline"
-                                        style="font-size: 0.875rem; padding: 0.5rem 1rem;">👁️ Ver Detalhes</button>
-                                    <button class="btn btn-outline"
-                                        style="font-size: 0.875rem; padding: 0.5rem 1rem;">⬇️ Baixar</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            </div>
+            <button class="mobile-menu-btn" onclick="toggleMobileMenu()">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="3" y1="12" x2="21" y2="12"></line>
+                    <line x1="3" y1="6" x2="21" y2="6"></line>
+                    <line x1="3" y1="18" x2="21" y2="18"></line>
+                </svg>
+            </button>
         </div>
-    </section>
 
-    <script>
-document.addEventListener('DOMContentLoaded', () => {
+        <!-- Main Content -->
+        <section
+            style="min-height: 100vh; background: linear-gradient(135deg, var(--purple-50), var(--pink-50)); padding: 3rem 1rem;">
+            <div class="container" style="max-width: 80rem;">
+                <!-- Header -->
+                <div
+                    style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; margin-bottom: 2rem;">
+                    <div>
+                        <h1 style="font-size: 2.25rem; margin-bottom: 0.5rem;">Minhas Denúncias</h1>
+                        <p style="font-size: 1.125rem; color: var(--gray-600);">Acompanhe o status de suas denúncias</p>
+                    </div>
+                    <a href="denuncia.html" class="btn btn-purple"
+                        style="display: flex; align-items: center; gap: 0.5rem;">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <line x1="12" y1="5" x2="12" y2="19"></line>
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                        </svg>
+                        Nova Denúncia
+                    </a>
+                </div>
 
-    // pega o usuário salvo
-    const usuario = JSON.parse(
-        localStorage.getItem('usuarioLogado')
-    );
+                <!-- Estatísticas -->
+                <div class="grid grid-4 mb-4">
+                    <div class="card">
+                        <p style="color: var(--gray-600); font-size: 0.875rem; margin-bottom: 0.5rem;">Total de
+                            Denúncias
+                        </p>
+                        <p
+                            style="font-size: 2.25rem; font-weight: bold; color: var(--purple-600); margin-bottom: 0.75rem;">
+                            3</p>
+                        <p
+                            style="font-size: 0.875rem; color: var(--gray-600); display: flex; align-items: center; gap: 0.5rem;">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                <polyline points="14 2 14 8 20 8"></polyline>
+                            </svg>
+                            Registradas no sistema
+                        </p>
+                    </div>
 
-    console.log(usuario);
+                    <div class="card">
+                        <p style="color: var(--gray-600); font-size: 0.875rem; margin-bottom: 0.5rem;">Pendentes</p>
+                        <p style="font-size: 2.25rem; font-weight: bold; color: #EAB308; margin-bottom: 0.75rem;">1</p>
+                        <p
+                            style="font-size: 0.875rem; color: var(--gray-600); display: flex; align-items: center; gap: 0.5rem;">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <polyline points="12 6 12 12 16 14"></polyline>
+                            </svg>
+                            Aguardando análise
+                        </p>
+                    </div>
 
-    // se não estiver logado
-    if (!usuario) {
-        alert('Acesso negado. Faça login.');
-        window.location.href = 'login.html';
-        return;
-    }
+                    <div class="card">
+                        <p style="color: var(--gray-600); font-size: 0.875rem; margin-bottom: 0.5rem;">Em Análise</p>
+                        <p style="font-size: 2.25rem; font-weight: bold; color: #2563EB; margin-bottom: 0.75rem;">1</p>
+                        <p
+                            style="font-size: 0.875rem; color: var(--gray-600); display: flex; align-items: center; gap: 0.5rem;">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z">
+                                </path>
+                                <line x1="12" y1="9" x2="12" y2="13"></line>
+                                <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                            </svg>
+                            Sendo processadas
+                        </p>
+                    </div>
 
-    // pega o id do objeto
-    const idUsuario = usuario.id_usuario;
+                    <div class="card">
+                        <p style="color: var(--gray-600); font-size: 0.875rem; margin-bottom: 0.5rem;">Concluídas</p>
+                        <p style="font-size: 2.25rem; font-weight: bold; color: #16A34A; margin-bottom: 0.75rem;">1</p>
+                        <p
+                            style="font-size: 0.875rem; color: var(--gray-600); display: flex; align-items: center; gap: 0.5rem;">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                                <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                            </svg>
+                            Finalizadas
+                        </p>
+                    </div>
+                </div>
 
-    console.log('ID usuário:', idUsuario);
+                <!-- Lista de Denúncias -->
+                <div class="card">
+                    <h2 style="font-size: 1.5rem; margin-bottom: 0.5rem;">Histórico de Denúncias</h2>
+                    <p style="color: var(--gray-600); margin-bottom: 1.5rem;">Visualize e acompanhe todas as suas
+                        denúncias
+                        registradas</p>
 
-    // mostrar link admin somente se for admin
-    if (usuario.nivel_acesso === 'admin') {
-        document.getElementById('adminLink').style.display = 'inline-block';
-    }
+                    <!-- Tabs -->
+                    <div class="tabs">
+                        <div class="tabs-list"
+                            style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.5rem; border-bottom: 2px solid var(--gray-200); margin-bottom: 1.5rem;">
+                            <button class="tab-trigger active" onclick="filterDenuncias('todas')"
+                                id="tab-todas">Todas</button>
+                            <button class="tab-trigger" onclick="filterDenuncias('pendentes')"
+                                id="tab-pendentes">Pendentes</button>
+                            <button class="tab-trigger" onclick="filterDenuncias('em_analise')" id="tab-em_analise">Em
+                                Análise</button>
+                            <button class="tab-trigger" onclick="filterDenuncias('concluidas')"
+                                id="tab-concluidas">Concluídas</button>
+                        </div>
 
-    carregarDenunciasDoBanco(idUsuario);
-});
+                        <!-- Denúncias -->
+                        <div id="denuncias-container">
+                            <!-- Denúncia 1 -->
+                            <div class="denuncia-card pendente"
+                                style="border: 1px solid var(--gray-200); border-radius: 0.5rem; padding: 1.5rem; margin-bottom: 1rem; background: var(--white); transition: all 0.3s;">
+                                <div
+                                    style="display: flex; justify-content: space-between; align-items-start; gap: 1rem; flex-wrap: wrap;">
+                                    <div style="flex: 1;">
+                                        <div
+                                            style="display: flex; justify-content: space-between; align-items-start; margin-bottom: 0.75rem;">
+                                            <div>
+                                                <h3
+                                                    style="font-weight: 600; font-size: 1.125rem; margin-bottom: 0.25rem;">
+                                                    Violência Patrimonial</h3>
+                                                <p style="font-size: 0.875rem; color: var(--gray-600);">Protocolo:
+                                                    VA-2026-001156</p>
+                                            </div>
+                                            <span class="badge badge-warning">
+                                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none"
+                                                    stroke="currentColor" stroke-width="2">
+                                                    <circle cx="12" cy="12" r="10"></circle>
+                                                    <polyline points="12 6 12 12 16 14"></polyline>
+                                                </svg>
+                                                Pendente
+                                            </span>
+                                        </div>
+                                        <p style="color: var(--gray-700); margin-bottom: 0.75rem;">Denúncia de
+                                            destruição de
+                                            bens pessoais</p>
+                                        <div
+                                            style="display: flex; gap: 1rem; font-size: 0.875rem; color: var(--gray-600); flex-wrap: wrap;">
+                                            <span>📅 05/04/2026</span>
+                                            <span>🕐 16:45</span>
+                                        </div>
+                                    </div>
+                                    <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+                                        <button class="btn btn-outline"
+                                            style="font-size: 0.875rem; padding: 0.5rem 1rem;">👁️ Ver Detalhes</button>
+                                        <button class="btn btn-outline"
+                                            style="font-size: 0.875rem; padding: 0.5rem 1rem;">⬇️ Baixar</button>
+                                    </div>
+                                </div>
+                            </div>
 
-async function carregarDenunciasDoBanco(idUsuario) {
-    console.log(idUsuario);
+                            <!-- Denúncia 2 -->
+                            <div class="denuncia-card em_analise"
+                                style="border: 1px solid var(--gray-200); border-radius: 0.5rem; padding: 1.5rem; margin-bottom: 1rem; background: var(--white);">
+                                <div
+                                    style="display: flex; justify-content: space-between; align-items-start; gap: 1rem; flex-wrap: wrap;">
+                                    <div style="flex: 1;">
+                                        <div
+                                            style="display: flex; justify-content: space-between; align-items-start; margin-bottom: 0.75rem;">
+                                            <div>
+                                                <h3
+                                                    style="font-weight: 600; font-size: 1.125rem; margin-bottom: 0.25rem;">
+                                                    Violência Física</h3>
+                                                <p style="font-size: 0.875rem; color: var(--gray-600);">Protocolo:
+                                                    VA-2026-001234</p>
+                                            </div>
+                                            <span class="badge badge-primary">
+                                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none"
+                                                    stroke="currentColor" stroke-width="2">
+                                                    <path
+                                                        d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z">
+                                                    </path>
+                                                    <line x1="12" y1="9" x2="12" y2="13"></line>
+                                                    <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                                                </svg>
+                                                Em Análise
+                                            </span>
+                                        </div>
+                                        <p style="color: var(--gray-700); margin-bottom: 0.75rem;">Denúncia de agressão
+                                            física ocorrida no ambiente doméstico</p>
+                                        <div
+                                            style="display: flex; gap: 1rem; font-size: 0.875rem; color: var(--gray-600); flex-wrap: wrap;">
+                                            <span>📅 15/04/2026</span>
+                                            <span>🕐 14:30</span>
+                                        </div>
+                                    </div>
+                                    <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+                                        <button class="btn btn-outline"
+                                            style="font-size: 0.875rem; padding: 0.5rem 1rem;">👁️ Ver Detalhes</button>
+                                        <button class="btn btn-outline"
+                                            style="font-size: 0.875rem; padding: 0.5rem 1rem;">⬇️ Baixar</button>
+                                    </div>
+                                </div>
+                            </div>
 
-    try {
-        const resposta = await fetch(
-            `http://localhost:3000/api/denuncias/${idUsuario}`
-        );
+                            <div class="denuncia-card concluida"
+                                style="border: 1px solid var(--gray-200); border-radius: 0.5rem; padding: 1.5rem; background: var(--white);">
+                                <div
+                                    style="display: flex; justify-content: space-between; align-items-start; gap: 1rem; flex-wrap: wrap;">
+                                    <div style="flex: 1;">
+                                        <div
+                                            style="display: flex; justify-content: space-between; align-items-start; margin-bottom: 0.75rem;">
+                                            <div>
+                                                <h3
+                                                    style="font-weight: 600; font-size: 1.125rem; margin-bottom: 0.25rem;">
+                                                    Violência Psicológica</h3>
+                                                <p style="font-size: 0.875rem; color: var(--gray-600);">Protocolo:
+                                                    VA-2026-001198</p>
+                                            </div>
+                                            <span class="badge badge-success">
+                                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none"
+                                                    stroke="currentColor" stroke-width="2">
+                                                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                                                    <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                                                </svg>
+                                                Concluída
+                                            </span>
+                                        </div>
+                                        <p style="color: var(--gray-700); margin-bottom: 0.75rem;">Relato de ameaças e
+                                            intimidação constante</p>
+                                        <div
+                                            style="display: flex; gap: 1rem; font-size: 0.875rem; color: var(--gray-600); flex-wrap: wrap;">
+                                            <span>📅 10/04/2026</span>
+                                            <span>🕐 09:15</span>
+                                        </div>
+                                    </div>
+                                    <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+                                        <button class="btn btn-outline"
+                                            style="font-size: 0.875rem; padding: 0.5rem 1rem;">👁️ Ver Detalhes</button>
+                                        <button class="btn btn-outline"
+                                            style="font-size: 0.875rem; padding: 0.5rem 1rem;">⬇️ Baixar</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-        const denuncias = await resposta.json();
+            </div>
+            </div>
+        </section>
 
-        console.log(denuncias);
+        <script>
+            document.addEventListener('DOMContentLoaded', () => {
 
-        if (!resposta.ok) {
-            alert('Erro ao carregar o histórico de denúncias.');
-            return;
-        }
+                // CORREÇÃO 1: Pegar o ID diretamente do localStorage de forma segura
+                const idUsuario = localStorage.getItem('id_usuario');
+                const nomeUsuario = localStorage.getItem('nome');
+                const nivelAcesso = localStorage.getItem('nivel_acesso'); // caso use futuramente
 
-        const total = denuncias.length;
+                console.log('ID usuário recuperado:', idUsuario);
 
-        const pendentes = denuncias.filter(
-            d => d.status_denuncia === 'pendente'
-        ).length;
+                // se não encontrar o ID do usuário, significa que não fez login
+                if (!idUsuario) {
+                    alert('Acesso negado. Por favor, faça login.');
+                    window.location.href = 'login.html';
+                    return;
+                }
 
-        const emAnalise = denuncias.filter(
-            d =>
-                d.status_denuncia === 'em_analise' ||
-                d.status_denuncia === 'em_atendimento'
-        ).length;
+                // mostrar link admin somente se for admin
+                if (nivelAcesso === 'admin') {
+                    document.getElementById('adminLink').style.display = 'inline-block';
+                }
 
-        const concluidas = denuncias.filter(
-            d => d.status_denuncia === 'resolvida'
-        ).length;
+                // Passa o ID correto para carregar o banco
+                carregarDenunciasDoBanco(idUsuario);
+            });
 
-        document.querySelector(
-            '.grid-4 .card:nth-child(1) p:nth-child(2)'
-        ).textContent = total;
+            async function carregarDenunciasDoBanco(idUsuario) {
+                console.log("Buscando denúncias para o ID:", idUsuario);
 
-        document.querySelector(
-            '.grid-4 .card:nth-child(2) p:nth-child(2)'
-        ).textContent = pendentes;
+                try {
+                    const resposta = await fetch(
+                        `http://localhost:3000/api/denuncias/${idUsuario}`
+                    );
 
-        document.querySelector(
-            '.grid-4 .card:nth-child(3) p:nth-child(2)'
-        ).textContent = emAnalise;
+                    if (!resposta.ok) {
+                        alert('Erro ao carregar o histórico de denúncias.');
+                        return;
+                    }
 
-        document.querySelector(
-            '.grid-4 .card:nth-child(4) p:nth-child(2)'
-        ).textContent = concluidas;
+                    const denuncias = await resposta.json();
+                    console.log("Denúncias recebidas:", denuncias);
 
-        const container =
-            document.getElementById(
-                'denuncias-container'
-            );
+                    const total = denuncias.length;
 
-        container.innerHTML = '';
+                    const pendentes = denuncias.filter(
+                        d => d.status_denuncia === 'pendente'
+                    ).length;
 
-        if (total === 0) {
-            container.innerHTML = `
+                    const emAnalise = denuncias.filter(
+                        d =>
+                            d.status_denuncia === 'em_analise' ||
+                            d.status_denuncia === 'em_atendimento'
+                    ).length;
+
+                    const concluidas = denuncias.filter(
+                        d => d.status_denuncia === 'resolvida'
+                    ).length;
+
+                    document.querySelector(
+                        '.grid-4 .card:nth-child(1) p:nth-child(2)'
+                    ).textContent = total;
+
+                    document.querySelector(
+                        '.grid-4 .card:nth-child(2) p:nth-child(2)'
+                    ).textContent = pendentes;
+
+                    document.querySelector(
+                        '.grid-4 .card:nth-child(3) p:nth-child(2)'
+                    ).textContent = emAnalise;
+
+                    document.querySelector(
+                        '.grid-4 .card:nth-child(4) p:nth-child(2)'
+                    ).textContent = concluidas;
+
+                    const container = document.getElementById('denuncias-container');
+                    container.innerHTML = '';
+
+                    if (total === 0) {
+                        container.innerHTML = `
                 <p style="text-align:center;color:var(--gray-600);padding:2rem;">
                     Você ainda não registrou nenhuma denúncia.
                 </p>
             `;
-            return;
-        }
+                        return;
+                    }
 
-        denuncias.forEach(denuncia => {
+                    denuncias.forEach(denuncia => {
 
-            let classeBadge =
-                'badge-warning';
+                        let classeBadge = 'badge-warning';
+                        let textoStatus = 'Pendente';
 
-            let textoStatus =
-                'Pendente';
+                        if (denuncia.status_denuncia === 'em_analise') {
+                            classeBadge = 'badge-primary';
+                            textoStatus = 'Em Análise';
+                        }
 
-            if (
-                denuncia.status_denuncia ===
-                'em_analise'
-            ) {
-                classeBadge =
-                    'badge-primary';
+                        if (denuncia.status_denuncia === 'resolvida') {
+                            classeBadge = 'badge-success';
+                            textoStatus = 'Concluída';
+                        }
 
-                textoStatus =
-                    'Em Análise';
-            }
+                        // CORREÇÃO 2: Alterado de data_denuncia para data_ocorrido
+                        const dataFormatada = denuncia.data_ocorrido
+                            ? new Date(denuncia.data_ocorrido).toLocaleDateString('pt-BR')
+                            : 'Não informada';
 
-            if (
-                denuncia.status_denuncia ===
-                'resolvida'
-            ) {
-                classeBadge =
-                    'badge-success';
-
-                textoStatus =
-                    'Concluída';
-            }
-
-            const dataFormatada =
-                new Date(
-                    denuncia.data_denuncia
-                ).toLocaleDateString(
-                    'pt-BR'
-                );
-
-            const cardHTML = `
+                        const cardHTML = `
                 <div class="denuncia-card ${denuncia.status_denuncia}"
                     style="border:1px solid var(--gray-200);
                     border-radius:0.5rem;
@@ -442,8 +422,7 @@ async function carregarDenunciasDoBanco(idUsuario) {
 
                                     <p style="font-size:0.875rem;
                                         color:var(--gray-600);">
-                                        Protocolo:
-                                        ${denuncia.titulo}
+                                        Protocolo: ${denuncia.titulo}
                                     </p>
                                 </div>
 
@@ -476,103 +455,44 @@ async function carregarDenunciasDoBanco(idUsuario) {
                 </div>
             `;
 
-            container.innerHTML +=
-                cardHTML;
-        });
+                        container.innerHTML += cardHTML;
+                    });
 
-    } catch (erro) {
-        console.error(
-            'Erro na requisição das denúncias:',
-            erro
-        );
-    }
-}
+                } catch (erro) {
+                    console.error('Erro na requisição das denúncias:', erro);
+                }
+            }
 
-function filterDenuncias(filtro) {
-    const cards =
-        document.querySelectorAll(
-            '.denuncia-card'
-        );
+            function filterDenuncias(filtro) {
+                const cards = document.querySelectorAll('.denuncia-card');
+                const tabs = document.querySelectorAll('.tab-trigger');
 
-    const tabs =
-        document.querySelectorAll(
-            '.tab-trigger'
-        );
+                tabs.forEach(tab => tab.classList.remove('active'));
 
-    tabs.forEach(tab =>
-        tab.classList.remove(
-            'active'
-        )
-    );
+                document.getElementById('tab-' + filtro).classList.add('active');
 
-    document.getElementById(
-        'tab-' + filtro
-    ).classList.add(
-        'active'
-    );
+                cards.forEach(card => {
+                    if (filtro === 'todas') {
+                        card.style.display = 'block';
+                    } else if (filtro === 'pendentes' && card.classList.contains('pendente')) {
+                        card.style.display = 'block';
+                    } else if (filtro === 'em_analise' && (card.classList.contains('em_analise') || card.classList.contains('em_atendimento'))) {
+                        card.style.display = 'block';
+                    } else if (filtro === 'concluidas' && card.classList.contains('resolvida')) {
+                        card.style.display = 'block';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+            }
 
-    cards.forEach(card => {
-        if (
-            filtro === 'todas'
-        ) {
-            card.style.display =
-                'block';
-
-        } else if (
-            filtro ===
-                'pendentes' &&
-            card.classList.contains(
-                'pendente'
-            )
-        ) {
-            card.style.display =
-                'block';
-
-        } else if (
-            filtro ===
-                'em_analise' &&
-            (
-                card.classList.contains(
-                    'em_analise'
-                ) ||
-                card.classList.contains(
-                    'em_atendimento'
-                )
-            )
-        ) {
-            card.style.display =
-                'block';
-
-        } else if (
-            filtro ===
-                'concluidas' &&
-            card.classList.contains(
-                'resolvida'
-            )
-        ) {
-            card.style.display =
-                'block';
-
-        } else {
-            card.style.display =
-                'none';
-        }
-    });
-}
-
-function toggleMobileMenu() {
-    const menu =
-        document.getElementById(
-            'mobileMenu'
-        );
-
-    if (menu) {
-        menu.classList.toggle(
-            'active'
-        );
-    }
-}   
-</script>
+            function toggleMobileMenu() {
+                const menu = document.getElementById('mobileMenu');
+                if (menu) {
+                    menu.classList.toggle('active');
+                }
+            }   
+        </script>
 </body>
 
 </html>
