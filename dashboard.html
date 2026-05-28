@@ -11,31 +11,42 @@
 </head>
 
 <body>
-    <!-- Header -->
     <header>
-        <div class="container header-content">
-            <a href="index.html" class="logo">
-                <div class="logo-circle">V</div>
-                <span class="logo-text">Voz Ativa</span>
+    <div class="container header-content">
+        <a href="index.html" class="logo">
+            <div class="logo-circle">V</div>
+            <span class="logo-text">Voz Ativa</span>
+        </a>
+
+        <nav class="nav-desktop"></nav>
+
+        <div class="user-nav">
+            <a href="dashboard.html" class="user-nav-link active">
+                Minhas Denúncias
             </a>
 
-            <nav class="nav-desktop">
-            </nav>
+            <!-- LINK DO ADMIN (começa escondido) -->
+            <a href="denunciasADM.html"
+               id="adminLink"
+               class="user-nav-link"
+               style="display: none;">
+                Painel Admin
+            </a>
 
-            <div class="user-nav">
-                <a href="dashboard.html" class="user-nav-link active">Minhas Denúncias</a>
-                <a href="tel:180" class="btn-emergency">180</a>
-            </div>
-
-            <button class="mobile-menu-btn" onclick="toggleMobileMenu()">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <line x1="3" y1="12" x2="21" y2="12"></line>
-                    <line x1="3" y1="6" x2="21" y2="6"></line>
-                    <line x1="3" y1="18" x2="21" y2="18"></line>
-                </svg>
-            </button>
+            <a href="tel:180" class="btn-emergency">
+                180
+            </a>
         </div>
-    </header>
+
+        <button class="mobile-menu-btn" onclick="toggleMobileMenu()">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2">
+                <line x1="3" y1="12" x2="21" y2="12"></line>
+                <line x1="3" y1="6" x2="21" y2="6"></line>
+                <line x1="3" y1="18" x2="21" y2="18"></line>
+            </svg>
+        </button>
+    </div>
 
     <!-- Main Content -->
     <section
@@ -271,113 +282,297 @@
     </section>
 
     <script>
-        // Executa automaticamente assim que a página carrega
-        document.addEventListener('DOMContentLoaded', () => {
-            const idUsuario = localStorage.getItem('id_usuario');
+document.addEventListener('DOMContentLoaded', () => {
 
-            // Se não houver um ID salvo, significa que não fez login. Redireciona para segurança.
-            
+    // pega o usuário salvo
+    const usuario = JSON.parse(
+        localStorage.getItem('usuarioLogado')
+    );
 
-        async function carregarDenunciasDoBanco(idUsuario) {
-            try {
-                const resposta = await fetch(`http://localhost:3000/api/denuncias/${idUsuario}`);
-                const denuncias = await resposta.json();
+    console.log(usuario);
 
-                if (!resposta.ok) {
-                    alert('Erro ao carregar o histórico de denúncias.');
-                    return;
-                }
+    // se não estiver logado
+    if (!usuario) {
+        alert('Acesso negado. Faça login.');
+        window.location.href = 'login.html';
+        return;
+    }
 
-                const total = denuncias.length;
-                const pendentes = denuncias.filter(d => d.status_denuncia === 'pendente').length;
-                const emAnalise = denuncias.filter(d => d.status_denuncia === 'em_analise' || d.status_denuncia === 'em_atendimento').length;
-                const concluidas = denuncias.filter(d => d.status_denuncia === 'resolvida').length;
+    // pega o id do objeto
+    const idUsuario = usuario.id_usuario;
 
-                document.querySelector('.grid-4 .card:nth-child(1) p:nth-child(2)').textContent = total;
-                document.querySelector('.grid-4 .card:nth-child(2) p:nth-child(2)').textContent = pendentes;
-                document.querySelector('.grid-4 .card:nth-child(3) p:nth-child(2)').textContent = emAnalise;
-                document.querySelector('.grid-4 .card:nth-child(4) p:nth-child(2)').textContent = concluidas;
+    console.log('ID usuário:', idUsuario);
 
-                // 2. Renderizar os Cards de Denúncias na Tela
-                const container = document.getElementById('denuncias-container');
-                container.innerHTML = ''; // Limpa os cards estáticos antigos
+    // mostrar link admin somente se for admin
+    if (usuario.nivel_acesso === 'admin') {
+        document.getElementById('adminLink').style.display = 'inline-block';
+    }
 
-                if (total === 0) {
-                    container.innerHTML = `<p style="text-align: center; color: var(--gray-600); padding: 2rem;">Você ainda não registou nenhuma denúncia.</p>`;
-                    return;
-                }
+    carregarDenunciasDoBanco(idUsuario);
+});
 
-                denuncias.forEach(denuncia => {
-                    // Configuração visual do Badge de Status
-                    let classeBadge = 'badge-warning';
-                    let textoStatus = 'Pendente';
-                    if (denuncia.status_denuncia === 'em_analise') { classeBadge = 'badge-primary'; textoStatus = 'Em Análise'; }
-                    if (denuncia.status_denuncia === 'resolvida') { classeBadge = 'badge-success'; textoStatus = 'Concluída'; }
+async function carregarDenunciasDoBanco(idUsuario) {
+    console.log(idUsuario);
 
-                    // Formata a data vinda do banco
-                    const dataFormatada = new Date(denuncia.data_denuncia).toLocaleDateString('pt-BR');
+    try {
+        const resposta = await fetch(
+            `http://localhost:3000/api/denuncias/${idUsuario}`
+        );
 
-                    const cardHTML = `
-                        <div class="denuncia-card ${denuncia.status_denuncia}" style="border: 1px solid var(--gray-200); border-radius: 0.5rem; padding: 1.5rem; margin-bottom: 1rem; background: var(--white);">
-                            <div style="display: flex; justify-content: space-between; align-items: start; gap: 1rem; flex-wrap: wrap;">
-                                <div style="flex: 1;">
-                                    <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 0.75rem;">
-                                        <div>
-                                            <h3 style="font-weight: 600; font-size: 1.125rem; margin-bottom: 0.25rem;">${denuncia.nome_tipo || 'Geral'}</h3>
-                                            <p style="font-size: 0.875rem; color: var(--gray-600);">Protocolo: ${denuncia.titulo}</p>
-                                        </div>
-                                        <span class="badge ${classeBadge}">
-                                            ${textoStatus}
-                                        </span>
-                                    </div>
-                                    <p style="color: var(--gray-700); margin-bottom: 0.75rem;">${denuncia.descricao}</p>
-                                    <div style="display: flex; gap: 1rem; font-size: 0.875rem; color: var(--gray-600); flex-wrap: wrap;">
-                                        <span>📅 ${dataFormatada}</span>
-                                        <span>📍 ${denuncia.local_ocorrido || 'Não especificado'}</span>
-                                    </div>
+        const denuncias = await resposta.json();
+
+        console.log(denuncias);
+
+        if (!resposta.ok) {
+            alert('Erro ao carregar o histórico de denúncias.');
+            return;
+        }
+
+        const total = denuncias.length;
+
+        const pendentes = denuncias.filter(
+            d => d.status_denuncia === 'pendente'
+        ).length;
+
+        const emAnalise = denuncias.filter(
+            d =>
+                d.status_denuncia === 'em_analise' ||
+                d.status_denuncia === 'em_atendimento'
+        ).length;
+
+        const concluidas = denuncias.filter(
+            d => d.status_denuncia === 'resolvida'
+        ).length;
+
+        document.querySelector(
+            '.grid-4 .card:nth-child(1) p:nth-child(2)'
+        ).textContent = total;
+
+        document.querySelector(
+            '.grid-4 .card:nth-child(2) p:nth-child(2)'
+        ).textContent = pendentes;
+
+        document.querySelector(
+            '.grid-4 .card:nth-child(3) p:nth-child(2)'
+        ).textContent = emAnalise;
+
+        document.querySelector(
+            '.grid-4 .card:nth-child(4) p:nth-child(2)'
+        ).textContent = concluidas;
+
+        const container =
+            document.getElementById(
+                'denuncias-container'
+            );
+
+        container.innerHTML = '';
+
+        if (total === 0) {
+            container.innerHTML = `
+                <p style="text-align:center;color:var(--gray-600);padding:2rem;">
+                    Você ainda não registrou nenhuma denúncia.
+                </p>
+            `;
+            return;
+        }
+
+        denuncias.forEach(denuncia => {
+
+            let classeBadge =
+                'badge-warning';
+
+            let textoStatus =
+                'Pendente';
+
+            if (
+                denuncia.status_denuncia ===
+                'em_analise'
+            ) {
+                classeBadge =
+                    'badge-primary';
+
+                textoStatus =
+                    'Em Análise';
+            }
+
+            if (
+                denuncia.status_denuncia ===
+                'resolvida'
+            ) {
+                classeBadge =
+                    'badge-success';
+
+                textoStatus =
+                    'Concluída';
+            }
+
+            const dataFormatada =
+                new Date(
+                    denuncia.data_denuncia
+                ).toLocaleDateString(
+                    'pt-BR'
+                );
+
+            const cardHTML = `
+                <div class="denuncia-card ${denuncia.status_denuncia}"
+                    style="border:1px solid var(--gray-200);
+                    border-radius:0.5rem;
+                    padding:1.5rem;
+                    margin-bottom:1rem;
+                    background:var(--white);">
+
+                    <div style="display:flex;
+                        justify-content:space-between;
+                        align-items:start;
+                        gap:1rem;
+                        flex-wrap:wrap;">
+
+                        <div style="flex:1;">
+                            <div style="display:flex;
+                                justify-content:space-between;
+                                align-items:start;
+                                margin-bottom:0.75rem;">
+
+                                <div>
+                                    <h3 style="font-weight:600;
+                                        font-size:1.125rem;
+                                        margin-bottom:0.25rem;">
+                                        ${denuncia.nome_tipo || 'Geral'}
+                                    </h3>
+
+                                    <p style="font-size:0.875rem;
+                                        color:var(--gray-600);">
+                                        Protocolo:
+                                        ${denuncia.titulo}
+                                    </p>
                                 </div>
-                                <div style="display: flex; flex-direction: column; gap: 0.5rem;">
-                                    <button class="btn btn-outline" style="font-size: 0.875rem; padding: 0.5rem 1rem;">👁️ Ver Detalhes</button>
-                                </div>
+
+                                <span class="badge ${classeBadge}">
+                                    ${textoStatus}
+                                </span>
+                            </div>
+
+                            <p style="color:var(--gray-700);
+                                margin-bottom:0.75rem;">
+                                ${denuncia.descricao}
+                            </p>
+
+                            <div style="display:flex;
+                                gap:1rem;
+                                font-size:0.875rem;
+                                color:var(--gray-600);
+                                flex-wrap:wrap;">
+
+                                <span>
+                                    📅 ${dataFormatada}
+                                </span>
+
+                                <span>
+                                    📍 ${denuncia.local_ocorrido || 'Não especificado'}
+                                </span>
                             </div>
                         </div>
-                    `;
-                    container.innerHTML += cardHTML;
-                });
+                    </div>
+                </div>
+            `;
 
-            } catch (erro) {
-                console.error('Erro na requisição das denúncias:', erro);
-            }
+            container.innerHTML +=
+                cardHTML;
+        });
+
+    } catch (erro) {
+        console.error(
+            'Erro na requisição das denúncias:',
+            erro
+        );
+    }
+}
+
+function filterDenuncias(filtro) {
+    const cards =
+        document.querySelectorAll(
+            '.denuncia-card'
+        );
+
+    const tabs =
+        document.querySelectorAll(
+            '.tab-trigger'
+        );
+
+    tabs.forEach(tab =>
+        tab.classList.remove(
+            'active'
+        )
+    );
+
+    document.getElementById(
+        'tab-' + filtro
+    ).classList.add(
+        'active'
+    );
+
+    cards.forEach(card => {
+        if (
+            filtro === 'todas'
+        ) {
+            card.style.display =
+                'block';
+
+        } else if (
+            filtro ===
+                'pendentes' &&
+            card.classList.contains(
+                'pendente'
+            )
+        ) {
+            card.style.display =
+                'block';
+
+        } else if (
+            filtro ===
+                'em_analise' &&
+            (
+                card.classList.contains(
+                    'em_analise'
+                ) ||
+                card.classList.contains(
+                    'em_atendimento'
+                )
+            )
+        ) {
+            card.style.display =
+                'block';
+
+        } else if (
+            filtro ===
+                'concluidas' &&
+            card.classList.contains(
+                'resolvida'
+            )
+        ) {
+            card.style.display =
+                'block';
+
+        } else {
+            card.style.display =
+                'none';
         }
+    });
+}
 
-        // Mantém a sua função de filtragem por abas a funcionar normalmente!
-        function filterDenuncias(filtro) {
-            const cards = document.querySelectorAll('.denuncia-card');
-            const tabs = document.querySelectorAll('.tab-trigger');
+function toggleMobileMenu() {
+    const menu =
+        document.getElementById(
+            'mobileMenu'
+        );
 
-            tabs.forEach(tab => tab.classList.remove('active'));
-            document.getElementById('tab-' + filtro).classList.add('active');
-
-            cards.forEach(card => {
-                if (filtro === 'todas') {
-                    card.style.display = 'block';
-                } else if (filtro === 'pendentes' && card.classList.contains('pendente')) {
-                    card.style.display = 'block';
-                } else if (filtro === 'em_analise' && (card.classList.contains('em_analise') || card.classList.contains('em_atendimento'))) {
-                    card.style.display = 'block';
-                } else if (filtro === 'concluidas' && card.classList.contains('resolvida')) {
-                    card.style.display = 'block';
-                } else {
-                    card.style.display = 'none';
-                }
-            });
-        }
-
-        function toggleMobileMenu() {
-            const menu = document.getElementById('mobileMenu');
-            if (menu) menu.classList.toggle('active');
-        }
-    </script>
+    if (menu) {
+        menu.classList.toggle(
+            'active'
+        );
+    }
+}   
+</script>
 </body>
 
 </html>

@@ -234,178 +234,329 @@
     </div>
 
     <script>
-        let denunciaSelecionada = null;
-        let denuncias = [];
+    let denunciaSelecionada = null;
+    let denuncias = [];
 
-        function protegerPagina() {
-            const usuario = JSON.parse(
-                localStorage.getItem('usuarioLogado')
+    // ===================================
+    // PROTEGER PÁGINA
+    // ===================================
+    function protegerPagina() {
+
+        const usuario = JSON.parse(
+            localStorage.getItem('usuarioLogado')
+        );
+
+        if (!usuario) {
+            alert('Faça login primeiro');
+            window.location.href =
+                '../login/login.html';
+            return;
+        }
+
+        document.getElementById(
+            'adminNome'
+        ).innerText = usuario.nome;
+    }
+
+    // ===================================
+    // BUSCAR DENÚNCIAS DA API
+    // ===================================
+    async function carregarDenuncias() {
+
+        console.log('Buscando denúncias...');
+
+        try {
+
+            const resposta = await fetch(
+                'http://localhost:3000/api/admin/denuncias'
             );
 
-            if (!usuario) {
-                window.location.href = 'login.html';
-                return;
-            }
+            console.log('Resposta API:', resposta);
 
-
-            document.getElementById('adminNome')
-                .innerText = usuario.nome;
-        }
-
-        async function carregarDenuncias() {
-            try {
-                const resposta = await fetch(
-                    'http://localhost:3000/api/admin/denuncias'
+            if (!resposta.ok) {
+                throw new Error(
+                    'Erro na resposta do servidor'
                 );
-
-                denuncias = await resposta.json();
-
-                renderizarTabela();
-                renderizarCards();
-
-            } catch (erro) {
-                console.error(erro);
-                alert('Erro ao carregar denúncias');
             }
+
+            denuncias = await resposta.json();
+
+            console.log(
+                'Denúncias recebidas:',
+                denuncias
+            );
+
+            renderizarCards();
+            renderizarTabela();
+
+        } catch (erro) {
+
+            console.error(
+                'Erro ao carregar denúncias:',
+                erro
+            );
+
+            alert(
+                'Não conseguiu carregar denúncias'
+            );
         }
+    }
 
-        function renderizarCards() {
+    // ===================================
+    // CARDS
+    // ===================================
+    function renderizarCards() {
 
-            document.getElementById('totalDenuncias')
-                .innerText = denuncias.length;
+        document.getElementById(
+            'totalDenuncias'
+        ).innerText = denuncias.length;
 
-            document.getElementById('pendentes')
-                .innerText = denuncias.filter(
-                    d => d.status_denuncia === 'pendente'
-                ).length;
+        document.getElementById(
+            'pendentes'
+        ).innerText = denuncias.filter(
+            d =>
+                d.status_denuncia ===
+                'pendente'
+        ).length;
 
-            document.getElementById('analise')
-                .innerText = denuncias.filter(
-                    d => d.status_denuncia === 'em_analise'
-                ).length;
+        document.getElementById(
+            'analise'
+        ).innerText = denuncias.filter(
+            d =>
+                d.status_denuncia ===
+                'em_analise'
+        ).length;
 
-            document.getElementById('resolvidas')
-                .innerText = denuncias.filter(
-                    d => d.status_denuncia === 'resolvida'
-                ).length;
-        }
+        document.getElementById(
+            'resolvidas'
+        ).innerText = denuncias.filter(
+            d =>
+                d.status_denuncia ===
+                'resolvida'
+        ).length;
+    }
 
-        function renderizarTabela() {
+    // ===================================
+    // TABELA
+    // ===================================
+    function renderizarTabela() {
 
-            const tbody =
-                document.getElementById('listaDenuncias');
+        const tbody =
+            document.getElementById(
+                'listaDenuncias'
+            );
 
-            tbody.innerHTML = denuncias.map(d => `
+        if (!denuncias.length) {
+
+            tbody.innerHTML = `
                 <tr>
-                    <td>${d.id_denuncia}</td>
-                    <td>${d.usuario || 'Anônimo'}</td>
-                    <td>${d.nome_tipo || '-'}</td>
-                    <td>${d.titulo || '-'}</td>
-
-                    <td>
-                        <span class="badge ${d.status_denuncia}">
-                            ${d.status_denuncia}
-                        </span>
-                    </td>
-
-                    <td>${d.prioridade}</td>
-
-                    <td>
-                        <button
-                            class="btn-purple"
-                            onclick="abrirModal(${d.id_denuncia})"
-                        >
-                            Ver
-                        </button>
+                    <td colspan="7">
+                        Nenhuma denúncia encontrada
                     </td>
                 </tr>
-            `).join('');
-        }
-
-        function abrirModal(id) {
-
-            denunciaSelecionada =
-                denuncias.find(d => d.id_denuncia == id);
-
-            document.getElementById('detalhes')
-                .innerHTML = `
-                <div class="linha">
-                    <strong>Usuário:</strong>
-                    ${denunciaSelecionada.usuario || 'Anônimo'}
-                </div>
-
-                <div class="linha">
-                    <strong>Título:</strong>
-                    ${denunciaSelecionada.titulo}
-                </div>
-
-                <div class="linha">
-                    <strong>Descrição:</strong>
-                    ${denunciaSelecionada.descricao}
-                </div>
-
-                <div class="linha">
-                    <strong>Local:</strong>
-                    ${denunciaSelecionada.local_ocorrido || '-'}
-                </div>
-
-                <div class="linha">
-                    <strong>Prioridade:</strong>
-                    ${denunciaSelecionada.prioridade}
-                </div>
             `;
 
-            document.getElementById('novoStatus')
-                .value = denunciaSelecionada.status_denuncia;
-
-            document.getElementById('modal')
-                .style.display = 'flex';
+            return;
         }
 
-        async function salvarStatus() {
+        tbody.innerHTML = denuncias.map(d => `
+            <tr>
+                <td>${d.id_denuncia}</td>
 
-            const status =
-                document.getElementById('novoStatus')
-                .value;
+                <td>
+                    ${d.usuario || 'Anônimo'}
+                </td>
 
-            try {
+                <td>
+                    ${d.nome_tipo || '-'}
+                </td>
 
-                await fetch(
-                    `http://localhost:3000/api/admin/denuncias/${denunciaSelecionada.id_denuncia}`,
-                    {
-                        method: 'PUT',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify({
-                            status_denuncia: status
-                        })
-                    }
+                <td>
+                    ${d.titulo || '-'}
+                </td>
+
+                <td>
+                    <span class="badge ${d.status_denuncia}">
+                        ${formatarStatus(
+                            d.status_denuncia
+                        )}
+                    </span>
+                </td>
+
+                <td>
+                    ${d.prioridade || '-'}
+                </td>
+
+                <td>
+                    <button
+                        class="btn-purple"
+                        onclick="abrirModal(${d.id_denuncia})"
+                    >
+                        Ver
+                    </button>
+                </td>
+            </tr>
+        `).join('');
+    }
+
+    // ===================================
+    // MODAL
+    // ===================================
+    function abrirModal(id) {
+
+        denunciaSelecionada =
+            denuncias.find(
+                d => d.id_denuncia == id
+            );
+
+        if (!denunciaSelecionada) return;
+
+        document.getElementById(
+            'detalhes'
+        ).innerHTML = `
+            <div class="linha">
+                <strong>ID:</strong>
+                ${denunciaSelecionada.id_denuncia}
+            </div>
+
+            <div class="linha">
+                <strong>Usuário:</strong>
+                ${denunciaSelecionada.usuario || 'Anônimo'}
+            </div>
+
+            <div class="linha">
+                <strong>Tipo:</strong>
+                ${denunciaSelecionada.nome_tipo || '-'}
+            </div>
+
+            <div class="linha">
+                <strong>Título:</strong>
+                ${denunciaSelecionada.titulo || '-'}
+            </div>
+
+            <div class="linha">
+                <strong>Descrição:</strong>
+                ${denunciaSelecionada.descricao || '-'}
+            </div>
+
+            <div class="linha">
+                <strong>Local:</strong>
+                ${denunciaSelecionada.local_ocorrido || '-'}
+            </div>
+
+            <div class="linha">
+                <strong>Prioridade:</strong>
+                ${denunciaSelecionada.prioridade || '-'}
+            </div>
+        `;
+
+        document.getElementById(
+            'novoStatus'
+        ).value =
+            denunciaSelecionada.status_denuncia;
+
+        document.getElementById(
+            'modal'
+        ).style.display = 'flex';
+    }
+
+    // ===================================
+    // SALVAR STATUS
+    // ===================================
+    async function salvarStatus() {
+
+        const status =
+            document.getElementById(
+                'novoStatus'
+            ).value;
+
+        try {
+
+            const resposta = await fetch(
+                `http://localhost:3000/api/admin/denuncias/${denunciaSelecionada.id_denuncia}`,
+                {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type':
+                            'application/json'
+                    },
+                    body: JSON.stringify({
+                        status_denuncia:
+                            status
+                    })
+                }
+            );
+
+            if (!resposta.ok) {
+                throw new Error(
+                    'Erro ao atualizar'
                 );
-
-                alert('Status atualizado');
-
-                fecharModal();
-                carregarDenuncias();
-
-            } catch (erro) {
-                console.error(erro);
             }
-        }
 
-        function fecharModal() {
-            document.getElementById('modal')
-                .style.display = 'none';
-        }
+            alert(
+                'Status atualizado!'
+            );
 
-        function logout() {
-            localStorage.removeItem('usuarioLogado');
-            window.location.href = 'login.html';
+            fecharModal();
+
+            carregarDenuncias();
+
+        } catch (erro) {
+
+            console.error(erro);
+
+            alert(
+                'Erro ao atualizar status'
+            );
         }
+    }
+
+    // ===================================
+    // HELPERS
+    // ===================================
+    function fecharModal() {
+        document.getElementById(
+            'modal'
+        ).style.display = 'none';
+    }
+
+    function logout() {
+
+        localStorage.removeItem(
+            'usuarioLogado'
+        );
+
+        window.location.href =
+            '../login/login.html';
+    }
+
+    function formatarStatus(status) {
+
+        const mapa = {
+            pendente: 'Pendente',
+            em_analise: 'Em análise',
+            em_atendimento:
+                'Em atendimento',
+            resolvida: 'Resolvida'
+        };
+
+        return mapa[status] || status;
+    }
+
+    // ===================================
+    // INICIAR PÁGINA
+    // ===================================
+    window.onload = function () {
+
+        console.log(
+            'Página carregada'
+        );
 
         protegerPagina();
+
         carregarDenuncias();
-    </script>
+    };
+</script>
 
 </body>
 

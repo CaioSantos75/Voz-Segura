@@ -54,42 +54,65 @@ app.post('/api/usuarios', (req, res) => {
 // ROTA DE LOGIN
 // =====================================================
 app.post('/api/login', (req, res) => {
+
     const { email, senha } = req.body;
 
     const query = `
-        SELECT id_usuario, nome, senha
+        SELECT
+            id_usuario,
+            nome,
+            email,
+            senha,
+            nivel_acesso
         FROM usuarios
         WHERE email = ?
     `;
 
-    connection.query(query, [email], (err, results) => {
-        if (err) {
-            console.error(err);
-            return res.status(500).json({
-                error: 'Erro interno no servidor.'
+    connection.query(
+        query,
+        [email],
+        (err, results) => {
+
+            if (err) {
+                console.error(err);
+
+                return res.status(500).json({
+                    error: 'Erro interno no servidor.'
+                });
+            }
+
+            if (results.length === 0) {
+                return res.status(401).json({
+                    error:
+                        'E-mail ou senha incorretos.'
+                });
+            }
+
+            const usuario = results[0];
+
+            // valida senha
+            if (senha !== usuario.senha) {
+
+                return res.status(401).json({
+                    error:
+                        'E-mail ou senha incorretos.'
+                });
+            }
+
+            // sucesso login
+            return res.status(200).json({
+                message: 'Login validado!',
+                id_usuario:
+                    usuario.id_usuario,
+                nome:
+                    usuario.nome,
+                email:
+                    usuario.email,
+                nivel_acesso:
+                    usuario.nivel_acesso
             });
         }
-
-        if (results.length === 0) {
-            return res.status(401).json({
-                error: 'E-mail ou senha incorretos.'
-            });
-        }
-
-        const usuario = results[0];
-
-        if (senha !== usuario.senha) {
-            return res.status(401).json({
-                error: 'E-mail ou senha incorretos.'
-            });
-        }
-
-        res.status(200).json({
-            message: 'Login validado!',
-            id_usuario: usuario.id_usuario,
-            nome: usuario.nome
-        });
-    });
+    );
 });
 
 // =====================================================
@@ -200,4 +223,220 @@ app.get('/api/denuncias/:id_usuario', (req, res) => {
 // =====================================================
 app.listen(3000, () => {
     console.log('Servidor backend rodando na porta 3000');
+});
+
+
+
+
+// =====================================================
+// ADMIN - LISTAR TODAS AS DENÚNCIAS
+// =====================================================
+app.get('/api/admin/denuncias', (req, res) => {
+
+    const query = `
+        SELECT
+            d.id_denuncia,
+            d.id_usuario,
+
+            CASE
+                WHEN d.anonimato = 1
+                THEN 'Anônimo'
+                ELSE u.nome
+            END AS usuario,
+
+            tv.nome_tipo,
+
+            d.titulo,
+            d.descricao,
+            d.local_ocorrido,
+            d.data_ocorrido,
+            d.status_denuncia,
+            d.prioridade,
+            d.anonimato,
+            d.data_denuncia
+
+        FROM denuncias d
+
+        LEFT JOIN usuarios u
+            ON d.id_usuario = u.id_usuario
+
+        LEFT JOIN tipos_violencia tv
+            ON d.id_tipo = tv.id_tipo
+
+        ORDER BY d.data_denuncia DESC
+    `;
+
+    connection.query(query, (err, results) => {
+
+        if (err) {
+            console.error(
+                'Erro ao buscar denúncias admin:',
+                err
+            );
+
+            return res.status(500).json({
+                error: 'Erro ao carregar denúncias.'
+            });
+        }
+
+        res.status(200).json(results);
+    });
+});
+
+
+// =====================================================
+// ADMIN - BUSCAR UMA DENÚNCIA
+// =====================================================
+app.get('/api/admin/denuncias/:id', (req, res) => {
+
+    const { id } = req.params;
+
+    const query = `
+        SELECT
+            d.id_denuncia,
+            d.id_usuario,
+
+            CASE
+                WHEN d.anonimato = 1
+                THEN 'Anônimo'
+                ELSE u.nome
+            END AS usuario,
+
+            tv.nome_tipo,
+
+            d.titulo,
+            d.descricao,
+            d.local_ocorrido,
+            d.data_ocorrido,
+            d.status_denuncia,
+            d.prioridade,
+            d.anonimato,
+            d.data_denuncia
+
+        FROM denuncias d
+
+        LEFT JOIN usuarios u
+            ON d.id_usuario = u.id_usuario
+
+        LEFT JOIN tipos_violencia tv
+            ON d.id_tipo = tv.id_tipo
+
+        WHERE d.id_denuncia = ?
+    `;
+
+    connection.query(query, [id], (err, results) => {
+
+        if (err) {
+            console.error(err);
+
+            return res.status(500).json({
+                error: 'Erro ao buscar denúncia.'
+            });
+        }
+
+        if (results.length === 0) {
+            return res.status(404).json({
+                error: 'Denúncia não encontrada.'
+            });
+        }
+
+        res.status(200).json(results[0]);
+    });
+});
+
+
+// =====================================================
+// ADMIN - ALTERAR STATUS DA DENÚNCIA
+// =====================================================
+app.put('/api/admin/denuncias/:id', (req, res) => {
+
+    const { id } = req.params;
+    const { status_denuncia } = req.body;
+
+    const statusPermitidos = [
+        'pendente',
+        'em_analise',
+        'em_atendimento',
+        'resolvida'
+    ];
+
+    if (!statusPermitidos.includes(status_denuncia)) {
+        return res.status(400).json({
+            error: 'Status inválido.'
+        });
+    }
+
+    const query = `
+        UPDATE denuncias
+        SET status_denuncia = ?
+        WHERE id_denuncia = ?
+    `;
+
+    connection.query(
+        query,
+        [status_denuncia, id],
+        (err, result) => {
+
+            if (err) {
+                console.error(
+                    'Erro ao atualizar denúncia:',
+                    err
+                );
+
+                return res.status(500).json({
+                    error: 'Erro ao atualizar denúncia.'
+                });
+            }
+
+            if (result.affectedRows === 0) {
+                return res.status(404).json({
+                    error: 'Denúncia não encontrada.'
+                });
+            }
+
+            res.status(200).json({
+                message:
+                    'Status atualizado com sucesso!'
+            });
+        }
+    );
+});
+
+
+// =====================================================
+// ADMIN - EXCLUIR DENÚNCIA
+// =====================================================
+app.delete('/api/admin/denuncias/:id', (req, res) => {
+
+    const { id } = req.params;
+
+    const query = `
+        DELETE FROM denuncias
+        WHERE id_denuncia = ?
+    `;
+
+    connection.query(query, [id], (err, result) => {
+
+        if (err) {
+            console.error(
+                'Erro ao deletar denúncia:',
+                err
+            );
+
+            return res.status(500).json({
+                error: 'Erro ao deletar denúncia.'
+            });
+        }
+
+        if (result.affectedRows === 0) {
+            return res.status(404).json({
+                error: 'Denúncia não encontrada.'
+            });
+        }
+
+        res.status(200).json({
+            message:
+                'Denúncia removida com sucesso.'
+        });
+    });
 });
